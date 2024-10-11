@@ -1,0 +1,35 @@
+<div>
+  <h1>Search for Team</h1>
+  <input [(ngModel)]="team1" placeholder="Enter team name" />
+  <button (click)="searchTeam()">Search</button>
+
+  <!-- Display an error message if there's any -->
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <!-- Display the squad if available -->
+  <div *ngIf="squad.length > 0">
+    <h2>Squad Information:</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Number</th>
+          <th>Name</th>
+          <th>Position</th>
+          <th>Age</th>
+          <th>Country</th>
+          <th>Transfer Team</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let player of squad">
+          <td>{{ player.player_number }}</td>
+          <td>{{ player.name }}</td>
+          <td>{{ player.position }}</td>
+          <td>{{ player.age }}</td>
+          <td>{{ player.country }}</td>
+          <td>{{ player.transfer_team || 'N/A' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
