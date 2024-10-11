@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import urllib.parse
 import os
 
-app = Flask(__name__, static_folder='client')
+app = Flask(__name__, static_folder='../client/dist/client', static_url_path='')
 CORS(app)
 
 @app.route('/')
