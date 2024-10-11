@@ -9,13 +9,8 @@ app = Flask(__name__, static_folder='../client/dist/client', static_url_path='')
 CORS(app)
 
 @app.route('/')
-def serve_angular():
-    return send_from_directory(os.path.join(app.static_folder), 'index.html')
-
-@app.route('/<path:path>')
-def serve_static_files(path):
-    return send_from_directory(os.path.join(app.static_folder), path)
-
+def index():
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/api/team-info', methods=['GET'])
 def get_team_info():
@@ -66,6 +61,10 @@ def get_team_info():
             })
 
     return jsonify({'squad': squad})
+
+@app.route('/<path:path>')
+def send_js(path):
+    return send_from_directory(app.static_folder, path)
 
 if __name__ == '__main__':
     app.run(debug=True)
