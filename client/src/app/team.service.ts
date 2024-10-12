@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TeamService {
-  private apiUrl = 'http://127.0.0.1:5000/api/team-info';  // Flask API URL
+  private apiUrl = 'https://futbol-bx72.onrender.com/api/team-info';  // Flask API URL
 
   constructor(private http: HttpClient) {}
 
