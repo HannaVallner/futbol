@@ -5,8 +5,10 @@ from bs4 import BeautifulSoup
 import urllib.parse
 import os
 
-app = Flask(__name__, static_folder='../client/dist/client/browser', static_url_path='')
+app = Flask(__name__, static_folder='./client/dist/client/browser', static_url_path='')
 CORS(app)
+print(os.listdir('./client/dist/client/browser'))  # This will list the contents of the static folder.
+print(os.listdir('../client/dist/client/browser'))  # This will list the contents of the static folder.
 
 @app.route('/')
 def index():
