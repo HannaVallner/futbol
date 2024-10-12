@@ -7,7 +7,6 @@ import os
 
 app = Flask(__name__, static_folder='../client/dist/client/browser', static_url_path='')
 CORS(app)
-print(os.listdir('../client/dist/client/browser'))  # This will list the contents of the static folder.
 
 @app.route('/')
 def index():
@@ -68,4 +67,4 @@ def send_js(path):
     return send_from_directory(app.static_folder, path)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
