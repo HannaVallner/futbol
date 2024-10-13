@@ -22,8 +22,10 @@ def get_team_info():
     search_query = urllib.parse.urlencode({'query': team_name})
     search_url = base_search_url + search_query
     headers = {'User-Agent': 'Mozilla/5.0'}
-    request_url = urllib.request.Request(search_url, headers=headers)
-    response = urllib.request.urlopen(request_url)
+    
+    # Use a different variable name instead of 'request'
+    search_request = urllib.request.Request(search_url, headers=headers)
+    response = urllib.request.urlopen(search_request)
     html_content = response.read()
     soup = BeautifulSoup(html_content, 'lxml')
     clubs_section = soup.find('h2', class_='content-box-headline', string=lambda x: 'Clubs' in x)
@@ -34,8 +36,10 @@ def get_team_info():
     clubs_table = clubs_section.find_next('table')
     first_team_link = clubs_table.find('a', title=lambda x: x and team_name.lower() in x.lower())['href']
     team_url = "https://www.transfermarkt.com" + first_team_link
-    request_url = urllib.request.Request(team_url, headers=headers)
-    response = urllib.request.urlopen(request_url)
+    
+    # Again, use a different variable name instead of 'request'
+    team_request = urllib.request.Request(team_url, headers=headers)
+    response = urllib.request.urlopen(team_request)
     html_content = response.read()
     soup = BeautifulSoup(html_content, 'lxml')
     tbodies = soup.find_all('tbody')
@@ -60,7 +64,42 @@ def get_team_info():
                 'transfer_team': transfer_team
             })
 
-    return jsonify({'squad': squad})
+    # Transfers Info
+    transfers = []
+    transfers_link = soup.find('a', href=lambda href: href and 'saison_id' in href)
+    if transfers_link:
+        transfers_url = "https://www.transfermarkt.com" + transfers_link['href']
+        
+        # Rename the variable here too
+        transfers_request = urllib.request.Request(transfers_url, headers=headers)
+        response = urllib.request.urlopen(transfers_request)
+        html_content = response.read()
+        soup = BeautifulSoup(html_content, 'lxml')
+        boxes = soup.find_all('div', class_='box')
+
+        for box in boxes:
+            header = box.find('h2')
+            if header and any(keyword in header.get_text(strip=True) for keyword in ['Arrivals', 'Departures']):
+                transfer_type = header.get_text(strip=True)
+                tbodies = box.find_all('tbody')
+                for tbody in tbodies:
+                    rows = tbody.find_all('tr', class_=['even', 'odd'])
+                    for row in rows:
+                        info = row.find_all('td', class_='hauptlink')
+                        fee = row.find('td', class_=lambda x: x and 'rechts hauptlink' in x).get_text(strip=True)
+                        name = info[0].get_text(strip=True)
+                        team = info[1].get_text(strip=True)
+                        transfers.append({
+                            'name': name,
+                            'team': team,
+                            'fee': fee,
+                            'type': transfer_type
+                        })
+
+    return jsonify({
+        'squad': squad,
+        'transfers': transfers
+    })
 
 @app.route('/<path:path>')
 def send_js(path):

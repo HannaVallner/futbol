@@ -9,42 +9,47 @@ import { TeamService } from '../../team.service';
 export class HomeComponent {
   team1 = '';
   team2 = '';
-  team1Info: any[] = [];
-  team2Info: any[] = [];
+  team1Info: any = { squad: [], transfers: [] };
+  team2Info: any = { squad: [], transfers: [] };
   errorMessage = '';
 
   constructor(public teamService: TeamService) {}
 
   searchTeams() {
-    if (this.team1 != '' && this.team2 != '') {
+    if (this.team1 !== '' || this.team2 !== '') {
+      // Fetch team 1 information
       this.teamService.getTeamInfo(this.team1).subscribe(
         data => {
-          if (data && data.squad) {
-            this.team1Info = data.squad;
+          if (data && data.squad && data.transfers) {
+            this.team1Info.squad = data.squad;
+            this.team1Info.transfers = data.transfers;
             this.errorMessage = '';
           } else {
-            this.errorMessage = 'No squad information available.';
+            this.errorMessage = 'No information available for team 1.';
           }
         },
         error => {
-          this.errorMessage = 'Team not found or an error occurred.';
+          this.errorMessage = 'Team 1 not found or an error occurred.';
         }
       );
-      this.teamService.getTeamInfo(this.team1).subscribe(
+
+      // Fetch team 2 information
+      this.teamService.getTeamInfo(this.team2).subscribe(
         data => {
-          if (data && data.squad) {
-            this.team2Info = data.squad;
+          if (data && data.squad && data.transfers) {
+            this.team2Info.squad = data.squad;
+            this.team2Info.transfers = data.transfers;
             this.errorMessage = '';
           } else {
-            this.errorMessage = 'No squad information available.';
+            this.errorMessage = 'No information available for team 2.';
           }
         },
         error => {
-          this.errorMessage = 'Team not found or an error occurred.';
+          this.errorMessage = 'Team 2 not found or an error occurred.';
         }
       );
     } else {
-      this.errorMessage = "Please enter both teams' names"
+      this.errorMessage = "Please enter both teams' names.";
     }
   }
 }
