@@ -6,12 +6,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TeamService {
-  private apiUrl = '../api/team-info';  // Flask API URL
+  private apiUrl = '../api/team-info';
 
   constructor(private http: HttpClient) {}
 
   getTeamInfo(teamName: string): Observable<any> {
-    let params = new HttpParams().set('team_name', teamName);  // Add query parameter
+    let params = new HttpParams().set('team_name', teamName);
     return this.http.get(this.apiUrl, { params });
   }
 }

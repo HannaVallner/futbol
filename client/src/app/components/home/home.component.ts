@@ -8,25 +8,43 @@ import { TeamService } from '../../team.service';
 })
 export class HomeComponent {
   team1 = '';
-  squad: any[] = [];
+  team2 = '';
+  team1Info: any[] = [];
+  team2Info: any[] = [];
   errorMessage = '';
 
   constructor(public teamService: TeamService) {}
 
-  // Triggered when user clicks search
-  searchTeam() {
-    this.teamService.getTeamInfo(this.team1).subscribe(
-      data => {
-        if (data && data.squad) {
-          this.squad = data.squad;
-          this.errorMessage = '';
-        } else {
-          this.errorMessage = 'No squad information available.';
+  searchTeams() {
+    if (this.team1 != '' && this.team2 != '') {
+      this.teamService.getTeamInfo(this.team1).subscribe(
+        data => {
+          if (data && data.squad) {
+            this.team1Info = data.squad;
+            this.errorMessage = '';
+          } else {
+            this.errorMessage = 'No squad information available.';
+          }
+        },
+        error => {
+          this.errorMessage = 'Team not found or an error occurred.';
         }
-      },
-      error => {
-        this.errorMessage = 'Team not found or an error occurred.';
-      }
-    );
+      );
+      this.teamService.getTeamInfo(this.team1).subscribe(
+        data => {
+          if (data && data.squad) {
+            this.team2Info = data.squad;
+            this.errorMessage = '';
+          } else {
+            this.errorMessage = 'No squad information available.';
+          }
+        },
+        error => {
+          this.errorMessage = 'Team not found or an error occurred.';
+        }
+      );
+    } else {
+      this.errorMessage = "Please enter both teams' names"
+    }
   }
 }

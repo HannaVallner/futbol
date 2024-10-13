@@ -1,13 +1,15 @@
 <div>
-  <h1>Search for Team</h1>
-  <input [(ngModel)]="team1" placeholder="Enter team name" />
-  <button (click)="searchTeam()">Search</button>
-
-  <!-- Display an error message if there's any -->
+  <h1>Search for team</h1>
+  <div> 
+    <input [(ngModel)]="team1" placeholder="Enter team 1 name" />
+  </div>
+  <div>
+    <input [(ngModel)]="team2" placeholder="Enter team 2 name" />
+  </div>
+  <button (click)="searchTeams()">Search</button>
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-  <!-- Display the squad if available -->
-  <div *ngIf="squad.length > 0">
+  <div *ngIf="team1Info.length > 0">
     <h2>Squad Information:</h2>
     <table>
       <thead>
@@ -17,17 +19,38 @@
           <th>Position</th>
           <th>Age</th>
           <th>Country</th>
-          <th>Transfer Team</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let player of squad">
+        <tr *ngFor="let player of team1Info">
           <td>{{ player.player_number }}</td>
           <td>{{ player.name }}</td>
           <td>{{ player.position }}</td>
           <td>{{ player.age }}</td>
           <td>{{ player.country }}</td>
-          <td>{{ player.transfer_team || 'N/A' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="team2Info.length > 0">
+    <h2>Squad Information:</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Number</th>
+          <th>Name</th>
+          <th>Position</th>
+          <th>Age</th>
+          <th>Country</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let player of team2Info">
+          <td>{{ player.player_number }}</td>
+          <td>{{ player.name }}</td>
+          <td>{{ player.position }}</td>
+          <td>{{ player.age }}</td>
+          <td>{{ player.country }}</td>
         </tr>
       </tbody>
     </table>
