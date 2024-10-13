@@ -1,18 +1,20 @@
-<div>
-  <h1>Search for team</h1>
-  <div> 
-    <input [(ngModel)]="team1" placeholder="Enter team 1 name" />
-  </div>
-  <div>
-    <input [(ngModel)]="team2" placeholder="Enter team 2 name" />
-  </div>
-  <button (click)="searchTeams()">Search</button>
+<app-navbar></app-navbar>
 
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+<!-- Wrapper for the search inputs and button -->
+<div class="search-container">
+  <input class="search-input" [(ngModel)]="team1" placeholder="Enter team 1 name" />
+  <input class="search-input" [(ngModel)]="team2" placeholder="Enter team 2 name" />
+  <button class="search-button" (click)="searchTeams()">Search</button>
+</div>
 
-  <!-- Team 1 Squad Info -->
-  <div *ngIf="team1Info && team1Info.squad.length > 0">
-    <h2>{{ team1 }} Squad</h2>
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+<div *ngIf="loading" class="loading">Loading...</div>
+
+<!-- Wrapper for the team information -->
+<div class="teams-container">
+  <div class="team-info" *ngIf="team1Info && team1Info.squad.length > 0">
+    <h2>{{ team1 }}</h2>
     <table>
       <thead>
         <tr>
@@ -33,34 +35,32 @@
         </tr>
       </tbody>
     </table>
+
+    <div *ngIf="team1Info.transfers.length > 0">
+      <h3>Transfers</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Team</th>
+            <th>Fee</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transfer of team1Info.transfers">
+            <td>{{ transfer.name }}</td>
+            <td>{{ transfer.team }}</td>
+            <td>{{ transfer.fee }}</td>
+            <td>{{ transfer.type }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <!-- Team 1 Transfer Info -->
-  <div *ngIf="team1Info && team1Info.transfers.length > 0">
-    <h3>{{ team1 }} Transfers</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Team</th>
-          <th>Fee</th>
-          <th>Type</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let transfer of team1Info.transfers">
-          <td>{{ transfer.name }}</td>
-          <td>{{ transfer.team }}</td>
-          <td>{{ transfer.fee }}</td>
-          <td>{{ transfer.type }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Team 2 Squad Info -->
-  <div *ngIf="team2Info && team2Info.squad.length > 0">
-    <h2>{{ team2 }} Squad</h2>
+  <div class="team-info" *ngIf="team2Info && team2Info.squad.length > 0">
+    <h2>{{ team2 }}</h2>
     <table>
       <thead>
         <tr>
@@ -81,28 +81,27 @@
         </tr>
       </tbody>
     </table>
-  </div>
 
-  <!-- Team 2 Transfer Info -->
-  <div *ngIf="team2Info && team2Info.transfers.length > 0">
-    <h3>{{ team2 }} Transfers</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Team</th>
-          <th>Fee</th>
-          <th>Type</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let transfer of team2Info.transfers">
-          <td>{{ transfer.name }}</td>
-          <td>{{ transfer.team }}</td>
-          <td>{{ transfer.fee }}</td>
-          <td>{{ transfer.type }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div *ngIf="team2Info.transfers.length > 0">
+      <h3>Transfers</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Team</th>
+            <th>Fee</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transfer of team2Info.transfers">
+            <td>{{ transfer.name }}</td>
+            <td>{{ transfer.team }}</td>
+            <td>{{ transfer.fee }}</td>
+            <td>{{ transfer.type }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

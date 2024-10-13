@@ -3,11 +3,8 @@ $dark-grey: #282626;
 $medium-light-grey: #484444;
 $light-grey: #6d6868;
 $background-color: #191414;
-$main-green: #1db954;
-$secondary-green: #1de463;
-$pink: #af4ca2;
-$yellow: #cdbc59;
-$white: #fff;
+$main-red: #b91d1d;
+$secondary-red: #e41d1d;
 
 @font-face {
     font-family: 'Nunito-Bold';
@@ -25,7 +22,7 @@ $white: #fff;
   
 body {
     background-color: $background-color;
-    color: $white; 
+    color: #fff; 
     font-family: 'Nunito-Light', sans-serif; 
 }
 
@@ -55,7 +52,7 @@ span {
 }
 
 button {
-  background-color: $main-green; 
+  background-color: $main-red; 
   color: $background-color; 
   padding: 10px 20px;
   border: none;
@@ -68,7 +65,7 @@ button {
 }
 
 button:hover {
-  background-color: $secondary-green;
+  background-color: $secondary-red;
 }
 
 .inner-container {

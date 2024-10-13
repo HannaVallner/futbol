@@ -3,14 +3,14 @@ from flask_cors import CORS
 import urllib.request
 from bs4 import BeautifulSoup
 import urllib.parse
-import os
 
 app = Flask(__name__, static_folder='../client/dist/client/browser', static_url_path='')
+#app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 @app.route('/')
 def index():
-    return send_from_directory(app.static_folder, 'index.html')
+     return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/api/team-info', methods=['GET'])
 def get_team_info():
@@ -23,21 +23,21 @@ def get_team_info():
     search_url = base_search_url + search_query
     headers = {'User-Agent': 'Mozilla/5.0'}
     
-    # Use a different variable name instead of 'request'
+    # Request the search results page
     search_request = urllib.request.Request(search_url, headers=headers)
     response = urllib.request.urlopen(search_request)
     html_content = response.read()
     soup = BeautifulSoup(html_content, 'lxml')
+    
     clubs_section = soup.find('h2', class_='content-box-headline', string=lambda x: 'Clubs' in x)
-
     if not clubs_section:
         return jsonify({'error': 'Team not found'}), 404
 
     clubs_table = clubs_section.find_next('table')
     first_team_link = clubs_table.find('a', title=lambda x: x and team_name.lower() in x.lower())['href']
     team_url = "https://www.transfermarkt.com" + first_team_link
-    
-    # Again, use a different variable name instead of 'request'
+
+    # Request the team page
     team_request = urllib.request.Request(team_url, headers=headers)
     response = urllib.request.urlopen(team_request)
     html_content = response.read()
@@ -69,8 +69,8 @@ def get_team_info():
     transfers_link = soup.find('a', href=lambda href: href and 'saison_id' in href)
     if transfers_link:
         transfers_url = "https://www.transfermarkt.com" + transfers_link['href']
-        
-        # Rename the variable here too
+
+        # Request the transfers page
         transfers_request = urllib.request.Request(transfers_url, headers=headers)
         response = urllib.request.urlopen(transfers_request)
         html_content = response.read()
@@ -101,6 +101,7 @@ def get_team_info():
         'transfers': transfers
     })
 
+# comment out when testing
 @app.route('/<path:path>')
 def send_js(path):
     return send_from_directory(app.static_folder, path)
