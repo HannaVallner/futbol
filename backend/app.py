@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import urllib.parse
 
 # Initialize Flask and point to Angular build
-app = Flask(__name__, static_folder='../client/dist/client/browser', static_url_path='')
+app = Flask(__name__, static_folder='browser', static_url_path='')
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # ===========================
