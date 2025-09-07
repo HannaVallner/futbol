@@ -101,10 +101,16 @@ def get_team_info():
 # ===========================
 # ANGULAR FRONTEND ROUTE
 # ===========================
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_frontend(path):
+    # Exclude API routes from frontend serving
+    if path.startswith("api/"):
+        return "Not Found", 404
+
     file_path = os.path.join(app.static_folder, path)
     if path != "" and os.path.exists(file_path):
         return send_from_directory(app.static_folder, path)
+    # fallback to index.html for Angular routes
     return send_from_directory(app.static_folder, 'index.html')
